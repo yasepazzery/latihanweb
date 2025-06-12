@@ -1,179 +1,501 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITEKES Mahardika Cirebon - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>ITEKES Mahardika Cirebon - Institut Teknologi Kesehatan</title>
     <style>
-        /* Custom styles for enhanced dashboard appearance */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
         }
-        .sidebar {
-            transition: all 0.3s ease-in-out;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        .sidebar-hidden {
-            transform: translateX(-100%);
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #3B82F6 0%, #9333EA 100%);
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .login-btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 100px;
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-in 0.3s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease-in 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            margin: 10% auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            color: white;
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ff6b6b;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+        }
+
+        .login-form-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .login-form-btn:hover {
+            opacity: 0.9;
+        }
+
+        .success-message, .error-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.9);
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.9);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- Sidebar -->
-    <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg sidebar z-50" id="sidebar">
-        <div class="p-5">
-            <h1 class="text-2xl font-bold text-gray-800">ITEKES Mahardika</h1>
-            <p class="text-sm text-gray-500">Cirebon</p>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <div class="logo-icon">IM</div>
+                    <span class="logo-text">ITEKES Mahardika Cirebon</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="#program">Program</a></li>
+                    <li><a href="#fasilitas">Fasilitas</a></li>
+                    <li><a href="#tentang">Tentang</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+                <button class="login-btn" onclick="openModal()">Login</button>
+            </nav>
         </div>
-        <nav class="mt-5">
-            <a href="#" class="flex items-center px-5 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600">
-                <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
-            </a>
-            <a href="#" class="flex items-center px-5 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600">
-                <i class="fas fa-user-graduate mr-3"></i> Students
-            </a>
-            <a href="#" class="flex items-center px-5 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600">
-                <i class="fas fa-chalkboard-teacher mr-3"></i> Lecturers
-            </a>
-            <a href="#" class="flex items-center px-5 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600">
-                <i class="fas fa-book-open mr-3"></i> Courses
-            </a>
-            <a href="#" class="flex items-center px-5 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600">
-                <i class="fas fa-cog mr-3"></i> Settings
-            </a>
-        </nav>
-    </div>
+    </header>
 
-    <!-- Main Content -->
-    <div class="ml-0 md:ml-64 transition-all duration-300" id="main-content">
-        <!-- Header -->
-        <header class="bg-white shadow p-4 flex justify-between items-center gradient-bg text-white">
-            <div class="flex items-center">
-                <button id="toggleSidebar" class="md:hidden text-white">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-                <h2 class="text-xl font-semibold ml-4">Dashboard</h2>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-800 focus:outline-none">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                </div>
-                <div class="flex items-center">
-                    <i class="fas fa-user-circle text-2xl"></i>
-                    <span class="ml-2 hidden md:block">Admin</span>
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Institut Teknologi Kesehatan Mahardika Cirebon</h1>
+                <p>Membangun Generasi Tenaga Kesehatan yang Profesional dan Berkualitas di Kota Cirebon</p>
+                <div class="cta-buttons">
+                    <a href="#program" class="btn btn-primary">Lihat Program Studi</a>
+                    <a href="#tentang" class="btn btn-secondary">Tentang Kami</a>
                 </div>
             </div>
-        </header>
+        </section>
 
-        <!-- Dashboard Content -->
-        <main class="p-6">
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg shadow card">
-                    <h3 class="text-lg font-semibold text-gray-700">Total Students</h3>
-                    <p class="text-3xl font-bold text-blue-600">1,234</p>
-                    <p class="text-sm text-gray-500">+5% from last month</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow card">
-                    <h3 class="text-lg font-semibold text-gray-700">Active Courses</h3>
-                    <p class="text-3xl font-bold text-green-600">56</p>
-                    <p class="text-sm text-gray-500">+2 new this semester</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow card">
-                    <h3 class="text-lg font-semibold text-gray-700">Lecturers</h3>
-                    <p class="text-3xl font-bold text-purple-600">78</p>
-                    <p class="text-sm text-gray-500">+3% from last year</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow card">
-                    <h3 class="text-lg font-semibold text-gray-700">Campus Events</h3>
-                    <p class="text-3xl font-bold text-orange-600">15</p>
-                    <p class="text-sm text-gray-500">Upcoming this month</p>
+        <section class="features" id="program">
+            <div class="container">
+                <h2>Program Unggulan Kami</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏥</div>
+                        <h3>Keperawatan</h3>
+                        <p>Program D3 dan S1 Keperawatan dengan kurikulum terkini dan praktek di rumah sakit terbaik.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <h3>Teknologi Laboratorium Medis</h3>
+                        <p>Program yang mempersiapkan tenaga ahli laboratorium dengan teknologi terdepan.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💊</div>
+                        <h3>Farmasi</h3>
+                        <p>Program pendidikan farmasi yang menghasilkan apoteker profesional dan kompeten.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🦴</div>
+                        <h3>Fisioterapi</h3>
+                        <p>Program fisioterapi dengan fasilitas lengkap dan dosen berpengalaman.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🍎</div>
+                        <h3>Gizi</h3>
+                        <p>Program studi gizi yang fokus pada nutrisi dan kesehatan masyarakat.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏃</div>
+                        <h3>Kesehatan Masyarakat</h3>
+                        <p>Program yang mencetak tenaga kesehatan masyarakat yang inovatif.</p>
+                    </div>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <!-- Charts -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Bar Chart -->
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Student Enrollment</h3>
-                    <canvas id="enrollmentChart" height="100"></canvas>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 2rem;">Login Portal Mahasiswa</h2>
+            
+            <div id="successMessage" class="success-message"></div>
+            <div id="errorMessage" class="error-message"></div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username atau NIM</label>
+                    <input type="text" id="username" name="username" placeholder="Masukkan username atau NIM" required>
                 </div>
-                <!-- Pie Chart -->
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Course Distribution</h3>
-                    <canvas id="courseChart" height="100"></canvas>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Masukkan password" required>
                 </div>
+                <button type="submit" class="login-form-btn">Login</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="#" style="color: #4ecdc4; text-decoration: none;">Lupa Password?</a>
             </div>
-        </main>
+        </div>
     </div>
 
     <script>
-        // Sidebar Toggle
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
+        // Sample user database
+        const users = [
+            { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator' },
+            { username: 'mahasiswa1', password: 'mhs123', role: 'mahasiswa', name: 'Andi', nim: '2023001' },
+            { username: '2023001', password: 'mhs123', role: 'mahasiswa', name: 'Budi', nim: '2023001' },
+            { username: 'dosen1', password: 'dsn123', role: 'dosen', name: 'Azzery', nidn: '0123456789' }
+        ];
 
-        toggleSidebar.addEventListener('click', () => {
-            sidebar.classList.toggle('sidebar-hidden');
-            mainContent.classList.toggle('md:ml-64');
-            mainContent.classList.toggle('ml-0');
-        });
+        // Modal functions
+        function openModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
 
-        // Bar Chart
-        const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
-        new Chart(enrollmentCtx, {
-            type: 'bar',
-            data: {
-                labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
-                datasets: [{
-                    label: 'Students Enrolled',
-                    data: [800, 900, 1000, 1100, 1200, 1234],
-                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                    borderColor: 'rgba(59, 130, 246, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            clearMessages();
+            document.getElementById('loginForm').reset();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function clearMessages() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showMessage(message, type) {
+            clearMessages();
+            const messageElement = document.getElementById(type + 'Message');
+            messageElement.textContent = message;
+            messageElement.style.display = 'block';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Find user in database
+            const user = users.find(u => 
+                (u.username === username || u.nim === username) && u.password === password
+            );
+            
+            if (user) {
+                showMessage('Login berhasil! Selamat datang, ' + user.name, 'success');
+                
+                setTimeout(() => {
+                    let redirectMessage = '';
+                    if (user.role === 'admin') {
+                        redirectMessage = 'Redirect ke Dashboard Admin...';
+                    } else if (user.role === 'mahasiswa') {
+                        redirectMessage = 'Redirect ke Portal Mahasiswa...';
+                    } else if (user.role === 'dosen') {
+                        redirectMessage = 'Redirect ke Portal Dosen...';
                     }
-                }
+                    alert(redirectMessage);
+                    closeModal();
+                }, 2000);
+            } else {
+                showMessage('Username atau password salah!', 'error');
             }
-        });
+        }
 
-        // Pie Chart
-        const courseCtx = document.getElementById('courseChart').getContext('2d');
-        new Chart(courseCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Nursing', 'Midwifery', 'Pharmacy', 'Public Health'],
-                datasets: [{
-                    data: [40, 30, 20, 10],
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.7)',
-                        'rgba(16, 185, 129, 0.7)',
-                        'rgba(147, 51, 234, 0.7)',
-                        'rgba(249, 115, 22, 0.7)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true
-            }
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
